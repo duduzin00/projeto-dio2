@@ -1,0 +1,17 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# Baseline / Database temporário
+baseline_hashes.json
+
+# OS files
+.DS_Store
+Thumbs.db

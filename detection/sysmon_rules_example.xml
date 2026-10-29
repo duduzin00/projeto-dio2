@@ -1,0 +1,26 @@
+<!--
+    Exemplo de Configuração de Telemetria Defensiva do Windows Sysmon
+    Focado na auditoria de processos não autorizados e modificação de arquivos
+-->
+<Sysmon schemaversion="4.50">
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+  <EventFiltering>
+    <!-- Event ID 1: Criação de Processos Suspeitos -->
+    <RuleGroup name="ProcessCreation_Monitoring" groupRelation="or">
+      <ProcessCreate onmatch="include">
+        <!-- Monitorar interpretadores executando scripts em diretórios temporários -->
+        <Image condition="end with">python.exe</Image>
+        <Image condition="end with">powershell.exe</Image>
+        <CommandLine condition="contains">AppData\Local\Temp</CommandLine>
+      </ProcessCreate>
+    </RuleGroup>
+
+    <!-- Event ID 11: Monitoramento de Criação Massiva de Arquivos com Extensões Incomuns -->
+    <RuleGroup name="FileCreation_Monitoring" groupRelation="or">
+      <FileCreate onmatch="include">
+        <TargetFilename condition="contains">README_RECOVERY</TargetFilename>
+        <TargetFilename condition="contains">DECRYPT_INSTRUCTIONS</TargetFilename>
+      </FileCreate>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>
